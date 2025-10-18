@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import userHeadshot from "../assets/user.png";
 
 export default function Navbar() {
@@ -12,7 +12,9 @@ export default function Navbar() {
       </nav>
       <div className="flex items-center gap-5">
         <img src={userHeadshot} alt="" />
-        <button className="btn btn-primary px-10">Login</button>
+        <Link to="/auth/login" className="btn btn-primary px-10">
+          Login
+        </Link>
       </div>
     </div>
   );
