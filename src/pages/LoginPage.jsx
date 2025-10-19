@@ -1,9 +1,12 @@
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import Loading from "../components/Loading";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function LoginPage() {
-  const { signInUser } = useAuth();
+  const { signInUser, isLoading } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   function handleLogin(e) {
     e.preventDefault();
@@ -15,7 +18,11 @@ export default function LoginPage() {
 
     signInUser(email, password)
       .then((userCredential) => {
-        toast.success("user log in successfully!");
+        const user = userCredential.user;
+        if (user) {
+          navigate(location.state ?? "/");
+          toast.success("user log in successfully!");
+        }
       })
       .catch((error) => console.log(error.message));
   }
