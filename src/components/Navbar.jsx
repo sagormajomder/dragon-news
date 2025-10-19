@@ -1,9 +1,16 @@
 import { Link, NavLink } from "react-router";
+import { toast } from "react-toastify";
 import userHeadshot from "../assets/user.png";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function Navbar() {
-  const { user } = useAuth();
+  const { user, signOutUser } = useAuth();
+
+  function handleLogOut() {
+    signOutUser()
+      .then(() => toast.success("Log out successful"))
+      .catch((error) => toast.error(error.message));
+  }
 
   return (
     <div className="mb-5 flex items-center justify-between">
@@ -14,10 +21,23 @@ export default function Navbar() {
         <NavLink to="/career">Career</NavLink>
       </nav>
       <div className="flex items-center gap-5">
-        <img src={userHeadshot} alt="" />
-        <Link to="/auth/login" className="btn btn-primary px-10">
-          Login
-        </Link>
+        <div className="overflow-hidden rounded-full">
+          <img
+            className="h-12 w-12 rounded-full object-cover"
+            src={user ? user.photoURL : userHeadshot}
+            alt=""
+          />
+        </div>
+
+        {user ? (
+          <button className="btn btn-primary px-10" onClick={handleLogOut}>
+            LogOut
+          </button>
+        ) : (
+          <Link to="/auth/login" className="btn btn-primary px-10">
+            Login
+          </Link>
+        )}
       </div>
     </div>
   );

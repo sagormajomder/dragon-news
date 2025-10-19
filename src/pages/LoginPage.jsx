@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { toast } from "react-toastify";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function LoginPage() {
@@ -13,7 +14,9 @@ export default function LoginPage() {
     const password = target.password.value;
 
     signInUser(email, password)
-      .then((userCredential) => {})
+      .then((userCredential) => {
+        toast.success("user log in successfully!");
+      })
       .catch((error) => console.log(error.message));
   }
 
@@ -26,9 +29,19 @@ export default function LoginPage() {
         <form onSubmit={handleLogin}>
           <fieldset className="fieldset">
             <label className="label">Email</label>
-            <input type="email" className="input" placeholder="Email" />
+            <input
+              name="email"
+              type="email"
+              className="input"
+              placeholder="Email"
+            />
             <label className="label">Password</label>
-            <input type="password" className="input" placeholder="Password" />
+            <input
+              name="password"
+              type="password"
+              className="input"
+              placeholder="Password"
+            />
             <div>
               <a className="link link-hover">Forgot password?</a>
             </div>

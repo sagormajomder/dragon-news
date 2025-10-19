@@ -1,5 +1,6 @@
 import { updateProfile } from "firebase/auth";
 import { Link } from "react-router";
+import { toast } from "react-toastify";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function RegistrationPage() {
@@ -17,13 +18,14 @@ export default function RegistrationPage() {
     createUser(email, password)
       .then((userCredential) => {
         const newUser = userCredential.user;
-
         updateProfile(newUser, {
           displayName: name,
           photoURL: photo,
-        });
+        })
+          .then(() => toast.success("User Registration successful."))
+          .catch((error) => toast.error(error.message));
       })
-      .catch((error) => console.log(error.message));
+      .catch((error) => toast.error(error.message));
   }
   return (
     <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
@@ -76,7 +78,7 @@ export default function RegistrationPage() {
             />
 
             <button type="submit" className="btn btn-neutral my-4">
-              Login
+              Register
             </button>
             <p className="text-accent text-center font-semibold">
               Already Have An Account ?{" "}
