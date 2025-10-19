@@ -14,7 +14,7 @@ export default function Navbar() {
 
   return (
     <div className="mb-5 flex items-center justify-between">
-      <div>{user && user.email}</div>
+      <div></div>
       <nav className="text-accent flex items-center gap-3">
         <NavLink to="/">Home</NavLink>
         <NavLink to="/about">About</NavLink>

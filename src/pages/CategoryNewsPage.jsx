@@ -1,5 +1,5 @@
 import { FaEye, FaRegBookmark, FaShareAlt, FaStar } from "react-icons/fa";
-import { useLoaderData, useParams } from "react-router";
+import { Link, useLoaderData, useParams } from "react-router";
 
 export default function CategoryNewsPage() {
   const { id } = useParams();
@@ -30,7 +30,8 @@ export default function CategoryNewsPage() {
 }
 
 function NewsCard({ news }) {
-  const { title, author, thumbnail_url, details, rating, total_view } = news;
+  const { id, title, author, thumbnail_url, details, rating, total_view } =
+    news;
   const formattedDate = new Date(author.published_date).toLocaleDateString();
 
   return (
@@ -74,9 +75,12 @@ function NewsCard({ news }) {
         {details.length > 200 ? (
           <>
             {details.slice(0, 200)}...
-            <span className="text-primary cursor-pointer font-semibold hover:underline">
+            <Link
+              to={`/news-details/${id}`}
+              className="text-primary cursor-pointer font-semibold hover:underline"
+            >
               Read More
-            </span>
+            </Link>
           </>
         ) : (
           details
