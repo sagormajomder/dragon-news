@@ -16,7 +16,9 @@ export default function LoginPage() {
             <div>
               <a className="link link-hover">Forgot password?</a>
             </div>
-            <button className="btn btn-neutral my-4">Login</button>
+            <button type="submit" className="btn btn-neutral my-4">
+              Login
+            </button>
             <p className="text-accent text-center font-semibold">
               Don’t Have An Account ?{" "}
               <Link to="/auth/registration" className="text-secondary">

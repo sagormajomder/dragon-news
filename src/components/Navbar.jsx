@@ -1,10 +1,13 @@
 import { Link, NavLink } from "react-router";
 import userHeadshot from "../assets/user.png";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Navbar() {
+  const { user } = useAuth();
+
   return (
     <div className="mb-5 flex items-center justify-between">
-      <div></div>
+      <div>{user && user.email}</div>
       <nav className="text-accent flex items-center gap-3">
         <NavLink to="/">Home</NavLink>
         <NavLink to="/about">About</NavLink>
