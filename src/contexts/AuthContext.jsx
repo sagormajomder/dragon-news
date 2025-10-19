@@ -9,6 +9,7 @@ const AuthContext = createContext();
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  console.log(user);
 
   function createUser(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);

@@ -1,3 +1,4 @@
+import { updateProfile } from "firebase/auth";
 import { Link } from "react-router";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -14,7 +15,14 @@ export default function RegistrationPage() {
 
     // console.log(name, photo, email, password);
     createUser(email, password)
-      .then((userCredential) => {})
+      .then((userCredential) => {
+        const newUser = userCredential.user;
+
+        updateProfile(newUser, {
+          displayName: name,
+          photoURL: photo,
+        });
+      })
       .catch((error) => console.log(error.message));
   }
   return (
