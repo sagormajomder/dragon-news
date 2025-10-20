@@ -43,6 +43,7 @@ const router = createBrowserRouter([
   },
   {
     path: "news-details/:id",
+    hydrateFallbackElement: <Loading />,
     element: (
       <PrivateRoute>
         <NewsDetailsPage />
