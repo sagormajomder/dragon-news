@@ -74,6 +74,8 @@ export default function RegistrationPage() {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        // console.log(errorCode);
+        // console.log(errorMessage);
         if (errorCode === "auth/email-already-in-use") {
           toast.error("User already exists in the database. Try another email");
         } else if (errorCode === "auth/weak-password") {
@@ -95,6 +97,9 @@ export default function RegistrationPage() {
         } else {
           toast.error(errorMessage || "An unexpected error occurred.");
         }
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }
 
