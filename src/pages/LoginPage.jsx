@@ -1,10 +1,9 @@
-import { useEffect } from "react";
-import { Link, Navigate, useLocation, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function LoginPage() {
-  const { signInUser, isLoading, user } = useAuth();
+  const { signInUser, user, setUser, setIsLoading, signOutUser } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -18,25 +17,41 @@ export default function LoginPage() {
 
     signInUser(email, password)
       .then((userCredential) => {
-        const user = userCredential.user;
-        if (user) {
-          navigate(location.state ?? "/");
-          toast.success("user log in successfully!");
+        if (!userCredential.user?.emailVerified) {
+          toast.error("Your email is not verified.");
+          // SignOut User
+          signOutUser()
+            .then(() => {
+              setIsLoading(false);
+            })
+            .catch((error) => {
+              console.log(error);
+              toast.error(error.message);
+            });
+
+          return;
         }
+
+        setIsLoading(false);
+        toast.success("user log in successfully!");
+        navigate(location.state ?? "/");
       })
-      .catch((error) => toast.error(error.message));
+      .catch((error) => {
+        console.log(error);
+        toast.error(error.message);
+      });
   }
 
   // prevent user to go login page after loggedIn
-  useEffect(function () {
-    if (user) {
-      toast.warn("You already loggedIn!");
-    }
-  }, []);
+  // useEffect(function () {
+  //   if (user) {
+  //     toast.warn("You already loggedIn!");
+  //   }
+  // }, []);
 
-  if (user) {
-    return <Navigate to="/" />;
-  }
+  // if (user) {
+  //   return <Navigate to="/" />;
+  // }
 
   return (
     <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
@@ -63,7 +78,9 @@ export default function LoginPage() {
               required
             />
             <div>
-              <a className="link link-hover">Forgot password?</a>
+              <Link to="/auth/reset-password" className="link link-hover">
+                Forgot password?
+              </Link>
             </div>
             <button type="submit" className="btn btn-neutral my-4">
               Login

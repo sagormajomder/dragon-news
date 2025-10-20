@@ -1,8 +1,10 @@
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  sendEmailVerification,
   signInWithEmailAndPassword,
   signOut,
+  updateProfile,
 } from "firebase/auth";
 import { createContext, use, useEffect, useState } from "react";
 import auth from "./../firebase/firebase.config";
@@ -13,9 +15,22 @@ function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  console.log(user);
+
+  // User Registration
   function createUser(email, password) {
     setIsLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
+  }
+
+  function updateUserProfile(updateInfo) {
+    return updateProfile(auth.currentUser, updateInfo);
+  }
+
+  function verifyUserBySendEmail() {
+    // auth.languageCode = "it";
+    // auth.useDeviceLanguage();
+    return sendEmailVerification(auth.currentUser);
   }
 
   function signInUser(email, password) {
@@ -28,6 +43,7 @@ function AuthProvider({ children }) {
     return signOut(auth);
   }
 
+  // Observer to get current logged User
   useEffect(function () {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -41,7 +57,17 @@ function AuthProvider({ children }) {
 
   return (
     <AuthContext
-      value={{ user, createUser, signInUser, signOutUser, isLoading }}
+      value={{
+        user,
+        setUser,
+        createUser,
+        updateUserProfile,
+        verifyUserBySendEmail,
+        signInUser,
+        signOutUser,
+        isLoading,
+        setIsLoading,
+      }}
     >
       {children}
     </AuthContext>
