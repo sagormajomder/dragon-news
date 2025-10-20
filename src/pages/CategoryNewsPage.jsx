@@ -1,7 +1,15 @@
 import { FaEye, FaRegBookmark, FaShareAlt, FaStar } from "react-icons/fa";
-import { Link, useLoaderData, useParams } from "react-router";
+import { Link, useLoaderData, useNavigation, useParams } from "react-router";
 
 export default function CategoryNewsPage() {
+  const navigation = useNavigation();
+
+  if (navigation.state === "loading") {
+    return (
+      <span className="loading loading-spinner loading-xl text-info col-span-6 justify-self-center"></span>
+    );
+  }
+
   const { id } = useParams();
   const data = useLoaderData();
 

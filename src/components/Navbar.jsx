@@ -4,11 +4,14 @@ import userHeadshot from "../assets/user.png";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function Navbar() {
-  const { user, signOutUser } = useAuth();
+  const { user, signOutUser, setIsLoading, isLoading } = useAuth();
 
   function handleLogOut() {
     signOutUser()
-      .then(() => toast.success("Log out successful"))
+      .then(() => {
+        toast.success("Log out successful");
+        setIsLoading(false);
+      })
       .catch((error) => toast.error(error.message));
   }
 
@@ -22,11 +25,15 @@ export default function Navbar() {
       </nav>
       <div className="flex items-center gap-5">
         <div className="overflow-hidden rounded-full">
-          <img
-            className="h-12 w-12 rounded-full object-cover"
-            src={user ? user.photoURL : userHeadshot}
-            alt=""
-          />
+          {isLoading ? (
+            <span className="loading loading-ring loading-xl"></span>
+          ) : (
+            <img
+              className="h-12 w-12 rounded-full object-cover"
+              src={user ? user.photoURL : userHeadshot}
+              alt=""
+            />
+          )}
         </div>
 
         {user ? (
