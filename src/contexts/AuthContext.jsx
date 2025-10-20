@@ -16,7 +16,7 @@ function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  console.log(user);
+  // console.log(user);
 
   // User Registration
   function createUser(email, password) {
@@ -29,8 +29,7 @@ function AuthProvider({ children }) {
   }
 
   function verifyUserBySendEmail() {
-    // auth.languageCode = "it";
-    // auth.useDeviceLanguage();
+    auth.useDeviceLanguage();
     return sendEmailVerification(auth.currentUser);
   }
 
@@ -47,6 +46,7 @@ function AuthProvider({ children }) {
 
   // Password Reset
   function resetPasswordBySendEmail(email) {
+    auth.useDeviceLanguage();
     return sendPasswordResetEmail(auth, email);
   }
   // Observer to get current logged User
