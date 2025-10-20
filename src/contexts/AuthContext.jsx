@@ -2,6 +2,7 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   sendEmailVerification,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
@@ -33,6 +34,7 @@ function AuthProvider({ children }) {
     return sendEmailVerification(auth.currentUser);
   }
 
+  // SignIn and Signout User
   function signInUser(email, password) {
     setIsLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
@@ -43,6 +45,10 @@ function AuthProvider({ children }) {
     return signOut(auth);
   }
 
+  // Password Reset
+  function resetPasswordBySendEmail(email) {
+    return sendPasswordResetEmail(auth, email);
+  }
   // Observer to get current logged User
   useEffect(function () {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -65,6 +71,7 @@ function AuthProvider({ children }) {
         verifyUserBySendEmail,
         signInUser,
         signOutUser,
+        resetPasswordBySendEmail,
         isLoading,
         setIsLoading,
       }}
