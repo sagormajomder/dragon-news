@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link, useLocation, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { useAuth } from "../contexts/AuthContext";
@@ -6,6 +8,7 @@ export default function LoginPage() {
   const { signInUser, user, setUser, setIsLoading, signOutUser } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   function handleLogin(e) {
     e.preventDefault();
@@ -96,13 +99,22 @@ export default function LoginPage() {
               required
             />
             <label className="label">Password</label>
-            <input
-              name="password"
-              type="password"
-              className="input"
-              placeholder="Password"
-              required
-            />
+            <div className="relative">
+              <input
+                name="password"
+                type={showPassword ? "text" : "password"}
+                className="input"
+                placeholder="Password"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute top-3 right-8 text-lg"
+              >
+                {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+              </button>
+            </div>
             <div>
               <Link to="/auth/reset-password" className="link link-hover">
                 Forgot password?

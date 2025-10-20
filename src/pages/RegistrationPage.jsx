@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { useAuth } from "../contexts/AuthContext";
@@ -14,6 +16,7 @@ export default function RegistrationPage() {
   } = useAuth();
 
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   function handleRegistration(e) {
     e.preventDefault();
@@ -145,13 +148,22 @@ export default function RegistrationPage() {
 
             {/* password  */}
             <label className="label">Password</label>
-            <input
-              name="password"
-              type="password"
-              className="input"
-              placeholder="Password"
-              required
-            />
+            <div className="relative">
+              <input
+                name="password"
+                type={showPassword ? "text" : "password"}
+                className="input"
+                placeholder="Password"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute top-3 right-8 text-lg"
+              >
+                {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+              </button>
+            </div>
 
             <button type="submit" className="btn btn-neutral my-4">
               Register
