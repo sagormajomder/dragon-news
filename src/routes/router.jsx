@@ -7,6 +7,7 @@ import LoginPage from "../pages/LoginPage";
 import NewsDetailsPage from "../pages/NewsDetailsPage";
 import RegistrationPage from "../pages/RegistrationPage";
 import ResetPassword from "../pages/ResetPassword";
+import NoLoggedRoute from "./NoLoggedRoute";
 import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
@@ -32,11 +33,19 @@ const router = createBrowserRouter([
     children: [
       {
         path: "auth/registration",
-        Component: RegistrationPage,
+        element: (
+          <NoLoggedRoute>
+            <RegistrationPage />
+          </NoLoggedRoute>
+        ),
       },
       {
         path: "auth/login",
-        Component: LoginPage,
+        element: (
+          <NoLoggedRoute>
+            <LoginPage />
+          </NoLoggedRoute>
+        ),
       },
       { path: "auth/reset-password", Component: ResetPassword },
     ],
