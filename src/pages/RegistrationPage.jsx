@@ -1,10 +1,12 @@
 import { updateProfile } from "firebase/auth";
-import { Link } from "react-router";
+import { useEffect } from "react";
+import { Link, Navigate } from "react-router";
 import { toast } from "react-toastify";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function RegistrationPage() {
-  const { createUser } = useAuth();
+  const { createUser, user, setIsLoading } = useAuth();
+
   function handleRegistration(e) {
     e.preventDefault();
     const target = e.target;
@@ -22,11 +24,26 @@ export default function RegistrationPage() {
           displayName: name,
           photoURL: photo,
         })
-          .then(() => toast.success("User Registration successful."))
+          .then(() => {
+            setIsLoading(false);
+            toast.success("User Registration successful.");
+          })
           .catch((error) => toast.error(error.message));
       })
       .catch((error) => toast.error(error.message));
   }
+
+  // prevent user to go registration page after loggedIn
+  useEffect(function () {
+    if (user) {
+      toast.warn("You already loggedIn!");
+    }
+  }, []);
+
+  if (user) {
+    return <Navigate to="/" />;
+  }
+
   return (
     <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
       <div className="card-body">

@@ -1,10 +1,10 @@
-import { Link, useLocation, useNavigate } from "react-router";
+import { useEffect } from "react";
+import { Link, Navigate, useLocation, useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import Loading from "../components/Loading";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function LoginPage() {
-  const { signInUser, isLoading } = useAuth();
+  const { signInUser, isLoading, user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -24,7 +24,18 @@ export default function LoginPage() {
           toast.success("user log in successfully!");
         }
       })
-      .catch((error) => console.log(error.message));
+      .catch((error) => toast.error(error.message));
+  }
+
+  // prevent user to go login page after loggedIn
+  useEffect(function () {
+    if (user) {
+      toast.warn("You already loggedIn!");
+    }
+  }, []);
+
+  if (user) {
+    return <Navigate to="/" />;
   }
 
   return (
@@ -41,6 +52,7 @@ export default function LoginPage() {
               type="email"
               className="input"
               placeholder="Email"
+              required
             />
             <label className="label">Password</label>
             <input
@@ -48,6 +60,7 @@ export default function LoginPage() {
               type="password"
               className="input"
               placeholder="Password"
+              required
             />
             <div>
               <a className="link link-hover">Forgot password?</a>
