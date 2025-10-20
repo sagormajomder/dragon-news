@@ -1,9 +1,11 @@
 import {
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
   onAuthStateChanged,
   sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
   updateProfile,
 } from "firebase/auth";
@@ -11,6 +13,8 @@ import { createContext, use, useEffect, useState } from "react";
 import auth from "./../firebase/firebase.config";
 
 const AuthContext = createContext();
+
+const googleProvider = new GoogleAuthProvider();
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -31,6 +35,10 @@ function AuthProvider({ children }) {
   function verifyUserBySendEmail() {
     auth.useDeviceLanguage();
     return sendEmailVerification(auth.currentUser);
+  }
+
+  function signInWithGoogle() {
+    return signInWithPopup(auth, googleProvider);
   }
 
   // SignIn and Signout User
@@ -70,6 +78,7 @@ function AuthProvider({ children }) {
         updateUserProfile,
         verifyUserBySendEmail,
         signInUser,
+        signInWithGoogle,
         signOutUser,
         resetPasswordBySendEmail,
         isLoading,
